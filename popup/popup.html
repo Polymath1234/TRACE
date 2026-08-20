@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FirstNode - Digital Identity Journey Tracker</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet.js Stylesheet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="vendor/leaflet.css">
+  
+  <!-- FirstNode Dashboard Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+  <div class="app-container">
+    
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="4" stroke="#00D4FF" fill="#00D4FF" fill-opacity="0.2"/>
+            <circle cx="19" cy="6" r="2" stroke="#00FFB3" fill="#00FFB3"/>
+            <circle cx="19" cy="18" r="2.5" stroke="#FF6B6B" fill="#FF6B6B"/>
+            <circle cx="5" cy="18" r="2" stroke="#FFD700" fill="#FFD700"/>
+            <circle cx="5" cy="6" r="2" stroke="#9B59B6" fill="#9B59B6"/>
+            <line x1="12" y1="12" x2="19" y2="6" stroke="#00FFB3" stroke-width="1.5" stroke-dasharray="2,2"/>
+            <line x1="12" y1="12" x2="19" y2="18" stroke="#FF6B6B" stroke-width="1.5"/>
+            <line x1="12" y1="12" x2="5" y2="18" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="1.5,1.5"/>
+            <line x1="12" y1="12" x2="5" y2="6" stroke="#9B59B6" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">FirstNode</span>
+          <span class="brand-tagline">Digital Trail Map</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Autopilot Active Status Indicator -->
+        <div class="autopilot-pill" id="autopilot-indicator" title="Autopilot is active and capturing data as you browse">
+          <span class="pulse-dot"></span>
+          <span class="autopilot-text">AUTOPILOT</span>
+        </div>
+
+        <span class="site-count-badge" id="header-site-count">0 sites</span>
+
+        <button class="icon-btn" id="btn-quick-add" title="Track Current Tab" aria-label="Track Current Tab">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="btn-header-welcome" title="User Guide" aria-label="Guide">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="btn-header-settings" title="Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="timeline" id="tab-btn-timeline">
+        <svg class="tab-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="21 8 21 21 3 21 3 8"></polyline>
+          <line x1="1" y1="3" x2="23" y2="3"></line>
+          <path d="M10 12h4"></path>
+        </svg>
+        Timeline
+      </button>
+
+      <button class="tab-btn" data-tab="graph" id="tab-btn-graph">
+        <svg class="tab-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+        Journey Graph
+      </button>
+
+      <button class="tab-btn" data-tab="map" id="tab-btn-map">
+        <svg class="tab-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+          <line x1="8" y1="2" x2="8" y2="18"></line>
+          <line x1="16" y1="6" x2="16" y2="22"></line>
+        </svg>
+        Data Map
+      </button>
+
+      <button class="tab-btn" data-tab="settings" id="tab-btn-settings">
+        <svg class="tab-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        Settings & Analytics
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="tab-content-container">
+
+      <!-- ================= 1. TIMELINE VIEW ================= -->
+      <section class="tab-panel active" id="panel-timeline">
+        <!-- Search & Sorting Bar -->
+        <div class="search-filter-bar">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-input" placeholder="Search sites, fields, notes..." autocomplete="off">
+            <button class="clear-search-btn" id="btn-clear-search" style="display:none;" aria-label="Clear Search">×</button>
+          </div>
+          <div class="sort-wrapper">
+            <select id="sort-select" aria-label="Sort Timeline">
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="domain-asc">Domain (A-Z)</option>
+              <option value="domain-desc">Domain (Z-A)</option>
+              <option value="fields-desc">Most Fields</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Filter Chips (Clean & Professional) -->
+        <div class="filter-chips" id="filter-chips">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip chip-identity" data-filter="identity">Identity</button>
+          <button class="chip chip-oauth" data-filter="oauth">OAuth</button>
+          <button class="chip chip-contact" data-filter="contact">Contact</button>
+          <button class="chip chip-address" data-filter="address">Address</button>
+          <button class="chip chip-gov" data-filter="government_id">Gov ID</button>
+          <button class="chip chip-financial" data-filter="financial">Financial</button>
+          <button class="chip chip-prof" data-filter="professional">Professional</button>
+          <button class="chip chip-edu" data-filter="education">Education</button>
+          <button class="chip chip-demo" data-filter="demographics">Demographics</button>
+          <button class="chip chip-social" data-filter="social_media">Social</button>
+        </div>
+
+        <!-- Timeline Items Container -->
+        <div class="timeline-list-container" id="timeline-list-container">
+          <!-- Populated dynamically via popup.js -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display:none;">
+          <div class="empty-icon-wrap">
+            <svg viewBox="0 0 64 64" width="54" height="54" fill="none" stroke="#00D4FF" stroke-width="2">
+              <circle cx="32" cy="32" r="28" stroke="#2A3A4E" stroke-width="2"/>
+              <circle cx="32" cy="32" r="6" fill="#00D4FF"/>
+              <circle cx="46" cy="22" r="4" fill="#00FFB3"/>
+              <circle cx="20" cy="42" r="4" fill="#FF6B6B"/>
+              <line x1="32" y1="32" x2="46" y2="22" stroke="#00FFB3" stroke-width="2" stroke-dasharray="2,2"/>
+              <line x1="32" y1="32" x2="20" y2="42" stroke="#FF6B6B" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="empty-title">Digital Trail is Empty</h3>
+          <p class="empty-desc">Autopilot is active. As you browse, fill forms, or sign in with Google/GitHub, FirstNode will capture your privacy trail.</p>
+          <button class="btn btn-primary" id="btn-empty-track-tab">
+            Track Current Tab
+          </button>
+        </div>
+
+        <!-- List Footer Stats & Export -->
+        <footer class="list-footer">
+          <div class="list-footer-stats" id="list-footer-stats">Showing 0 submissions</div>
+          <div class="list-footer-actions">
+            <button class="btn btn-sm btn-secondary" id="btn-footer-export-json" title="Export as JSON">JSON</button>
+            <button class="btn btn-sm btn-secondary" id="btn-footer-export-csv" title="Export as CSV">CSV</button>
+          </div>
+        </footer>
+      </section>
+
+      <!-- ================= 2. JOURNEY GRAPH VIEW (Cytoscape.js) ================= -->
+      <section class="tab-panel" id="panel-graph">
+        <div class="graph-view-wrapper">
+          <!-- Graph Top Toolbar -->
+          <div class="graph-toolbar">
+            <div class="graph-info">
+              <span class="graph-title">Digital Journey Network</span>
+              <span class="graph-meta" id="graph-meta-text">0 nodes • 0 hops</span>
+            </div>
+            <div class="graph-controls">
+              <button class="icon-btn-sm" id="btn-graph-fit" title="Fit to Screen">Fit</button>
+              <button class="icon-btn-sm" id="btn-graph-reset" title="Reset Layout">Reset</button>
+            </div>
+          </div>
+
+          <!-- Timeline Scrubber for Journey Playback -->
+          <div class="graph-scrubber-bar">
+            <div class="scrubber-label-row">
+              <span>Journey Playback</span>
+              <span id="graph-scrubber-label">All Steps</span>
+            </div>
+            <input type="range" id="graph-timeline-slider" min="1" max="100" value="100">
+          </div>
+
+          <!-- Cytoscape Container -->
+          <div class="graph-canvas-container">
+            <div id="cy" class="cy-viewport"></div>
+            <canvas id="graph-canvas-fallback" style="display:none;"></canvas>
+
+            <!-- Node Inspector Card (with Category Breakdown Tabs) -->
+            <div class="node-inspector-card" id="node-inspector" style="display:none;">
+              <div class="inspector-header">
+                <div class="inspector-title" id="inspector-domain">Domain</div>
+                <button class="inspector-close" id="btn-close-inspector" aria-label="Close">×</button>
+              </div>
+              
+              <div class="inspector-time" id="inspector-time">Timestamp</div>
+              
+              <!-- Inspector Sub-Tabs for Categories -->
+              <div class="inspector-tabs" id="inspector-tabs">
+                <button class="insp-tab active" data-insp-cat="all">All</button>
+                <button class="insp-tab" data-insp-cat="identity">Identity</button>
+                <button class="insp-tab" data-insp-cat="oauth">OAuth</button>
+                <button class="insp-tab" data-insp-cat="contact">Contact</button>
+                <button class="insp-tab" data-insp-cat="financial">Financial</button>
+                <button class="insp-tab" data-insp-cat="address">Address</button>
+                <button class="insp-tab" data-insp-cat="other">Other</button>
+              </div>
+
+              <div class="inspector-body">
+                <div class="inspector-fields" id="inspector-fields"></div>
+              </div>
+
+              <div class="inspector-actions">
+                <button class="btn btn-sm btn-primary" id="btn-inspector-visit">Visit Site</button>
+                <button class="btn btn-sm btn-danger" id="btn-inspector-delete">Delete</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Graph Legend -->
+          <div class="graph-legend-bar">
+            <span class="legend-item"><span class="dot dot-identity"></span> Identity</span>
+            <span class="legend-item"><span class="dot dot-oauth"></span> OAuth</span>
+            <span class="legend-item"><span class="dot dot-contact"></span> Contact</span>
+            <span class="legend-item"><span class="dot dot-address"></span> Address</span>
+            <span class="legend-item"><span class="dot dot-financial"></span> Financial</span>
+            <span class="legend-item"><span class="dot dot-gov"></span> Gov ID</span>
+            <span class="legend-item"><span class="dot dot-prof"></span> Professional</span>
+            <span class="legend-item"><span class="dot dot-edu"></span> Education</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. DATA MAP VIEW (Leaflet.js) ================= -->
+      <section class="tab-panel" id="panel-map">
+        <div class="map-view-wrapper">
+          <div id="map-container" class="map-container"></div>
+          
+          <!-- Map Overlay Controls -->
+          <div class="map-overlay-card">
+            <div class="map-overlay-header">
+              <span class="map-title">Server Host Locations</span>
+              <span class="map-pin-count" id="map-pin-count">0 locations</span>
+            </div>
+            
+            <!-- Timeline Range Slider -->
+            <div class="map-timeline">
+              <div class="timeline-label-row">
+                <span>Timeline Filter</span>
+                <span id="map-timeline-label">All Time</span>
+              </div>
+              <input type="range" id="map-timeline-slider" min="1" max="100" value="100">
+            </div>
+
+            <!-- Map Actions & Legend -->
+            <div class="map-footer-row">
+              <div class="map-legend">
+                <span class="legend-item"><span class="dot dot-contact"></span> Contact</span>
+                <span class="legend-item"><span class="dot dot-identity"></span> Identity</span>
+                <span class="legend-item"><span class="dot dot-financial"></span> Financial</span>
+                <span class="legend-item"><span class="dot dot-oauth"></span> OAuth</span>
+              </div>
+              <div class="map-buttons">
+                <button class="btn btn-sm btn-secondary" id="btn-map-fit">Fit All</button>
+                <button class="btn btn-sm btn-secondary" id="btn-map-refresh">Refresh</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. SETTINGS & ANALYTICS VIEW ================= -->
+      <section class="tab-panel" id="panel-settings">
+        <div class="settings-scroll-container">
+          
+          <!-- Statistics & Analytics Panel -->
+          <div class="settings-section">
+            <h4 class="section-heading">Trail Analytics & Growth</h4>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value" id="stat-total-sites">0</div>
+                <div class="stat-label">Sites Tracked</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-total-fields">0</div>
+                <div class="stat-label">Fields Collected</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-top-datatype">-</div>
+                <div class="stat-label">Top Data Type</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-top-provider">-</div>
+                <div class="stat-label">Top OAuth</div>
+              </div>
+            </div>
+
+            <!-- Chart.js 30-Day Growth Chart -->
+            <div class="chart-card">
+              <div class="chart-title">Data Exposure Over Time (Last 30 Days)</div>
+              <div class="chart-wrapper">
+                <canvas id="growth-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Data Types Exposure Distribution -->
+            <div class="breakdown-card">
+              <div class="breakdown-title">Data Type Exposure Distribution</div>
+              <div class="progress-stacked" id="progress-stacked-bar">
+                <div class="prog-bar prog-identity" style="width: 0%" title="Identity"></div>
+                <div class="prog-bar prog-oauth" style="width: 0%" title="OAuth"></div>
+                <div class="prog-bar prog-contact" style="width: 0%" title="Contact"></div>
+                <div class="prog-bar prog-address" style="width: 0%" title="Address"></div>
+                <div class="prog-bar prog-gov" style="width: 0%" title="Gov ID"></div>
+                <div class="prog-bar prog-financial" style="width: 0%" title="Financial"></div>
+                <div class="prog-bar prog-prof" style="width: 0%" title="Professional"></div>
+                <div class="prog-bar prog-edu" style="width: 0%" title="Education"></div>
+                <div class="prog-bar prog-demo" style="width: 0%" title="Demographics"></div>
+                <div class="prog-bar prog-social" style="width: 0%" title="Social"></div>
+              </div>
+              <div class="breakdown-legend" id="breakdown-legend">
+                <!-- Dynamically injected -->
+              </div>
+            </div>
+          </div>
+
+          <!-- General Preferences -->
+          <div class="settings-section">
+            <h4 class="section-heading">Autopilot & Detection Preferences</h4>
+            
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-title">Autopilot Active Browsing Tracking</div>
+                <div class="setting-desc">Automatically catch personal info and OAuth logins as you browse</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="setting-autopilot" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-title">Show In-Page Confirmation Prompts</div>
+                <div class="setting-desc">Display confirmation dialog before logging (optional)</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="setting-show-prompts">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-title">Track All 9 Sensitive Categories</div>
+                <div class="setting-desc">Includes Gov ID, Financial, Education & Professional info</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="setting-track-all" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-title">Dark Theme</div>
+                <div class="setting-desc">High-contrast slate and deep navy interface</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="setting-dark-mode" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Data Portability & Sovereignty -->
+          <div class="settings-section">
+            <h4 class="section-heading">Data Management & Export</h4>
+            <div class="backup-actions-grid">
+              <button class="btn btn-secondary" id="btn-export-json">
+                Export JSON
+              </button>
+              <button class="btn btn-secondary" id="btn-export-csv">
+                Export CSV
+              </button>
+              <label class="btn btn-secondary btn-file-label" id="label-import-json">
+                Import JSON
+                <input type="file" id="file-import-json" accept=".json" style="display:none;">
+              </label>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="settings-section danger-zone">
+            <h4 class="section-heading text-coral">Danger Zone</h4>
+            <div class="danger-row">
+              <div class="setting-info">
+                <div class="setting-title">Clear All Digital Trail Data</div>
+                <div class="setting-desc">Permanently remove all journey nodes, timeline entries, and notes</div>
+              </div>
+              <button class="btn btn-danger" id="btn-clear-all">
+                Clear All Data
+              </button>
+            </div>
+          </div>
+
+          <!-- Privacy Promise & Version Info -->
+          <div class="settings-section settings-footer-note">
+            <div class="privacy-promise">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00FFB3" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span><strong>Privacy Guarantee:</strong> All personal data is masked and stored 100% locally on your machine in Chrome Storage. No analytics or external tracking.</span>
+            </div>
+            <div class="about-links">
+              <span>FirstNode v2.0.0</span> •
+              <a href="#" id="link-open-welcome" class="link-teal">Welcome Guide</a> •
+              <a href="https://github.com" target="_blank" class="link-teal">Source</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Confirmation Modal Dialog -->
+    <div class="modal-backdrop" id="modal-backdrop" style="display:none;">
+      <div class="modal-card">
+        <h4 class="modal-title" id="modal-title">Confirm Action</h4>
+        <p class="modal-body" id="modal-body">Are you sure you want to proceed?</p>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+          <button class="btn btn-danger" id="btn-modal-confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Toast Notification -->
+    <div class="toast-notification" id="toast" style="display:none;"></div>
+
+  </div>
+
+  <!-- CDN Dependencies with Local Fallbacks -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="vendor/leaflet.js"></script>
+  <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- FirstNode Popup Dashboard Controller -->
+  <script src="popup.js"></script>
+</body>
+</html>

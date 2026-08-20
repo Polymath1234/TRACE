@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to FirstNode v2.0 - Digital Identity Journey Tracker</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-deep-navy: #0A1628;
+      --bg-slate: #1E2A3A;
+      --bg-light-slate: #2A3A4E;
+      --bg-darker: #070F1C;
+      --teal-primary: #00D4FF;
+      --teal-dark: #0099CC;
+      --coral-accent: #FF6B6B;
+      --mint-accent: #00FFB3;
+      --gold-accent: #FFD700;
+      --text-primary: #FFFFFF;
+      --text-secondary: #B0C4DE;
+      --text-muted: #8899AA;
+      --border-card: #2A3A4E;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep-navy);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 860px;
+      width: 100%;
+    }
+
+    /* Hero Header */
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(180deg, rgba(0, 212, 255, 0.08) 0%, rgba(10, 22, 40, 0) 100%);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      margin-bottom: 36px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 16px;
+      background: var(--bg-slate);
+      border: 1px solid var(--teal-primary);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.35);
+    }
+
+    .hero-title {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      background: linear-gradient(90deg, #FFFFFF 0%, #00D4FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-tagline {
+      font-size: 15px;
+      color: var(--teal-primary);
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin: 0 auto 24px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--teal-primary);
+      color: var(--bg-deep-navy);
+    }
+    .btn-primary:hover {
+      background: var(--teal-dark);
+      color: #FFFFFF;
+      box-shadow: 0 0 16px rgba(0, 212, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background: var(--bg-slate);
+      border: 1px solid var(--border-card);
+      color: var(--text-primary);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-light-slate);
+      border-color: var(--teal-primary);
+    }
+
+    /* Grid Sections */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .feature-card {
+      background: var(--bg-slate);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--teal-primary);
+    }
+
+    .feature-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--teal-primary);
+    }
+
+    .feature-text {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    /* 9 Categories List */
+    .categories-card {
+      background: var(--bg-slate);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 36px;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .cat-item {
+      background: var(--bg-darker);
+      border: 1px solid var(--border-card);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Privacy Banner */
+    .privacy-card {
+      background: rgba(0, 255, 179, 0.06);
+      border: 1px solid rgba(0, 255, 179, 0.3);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .privacy-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--mint-accent);
+      margin-bottom: 4px;
+    }
+
+    .privacy-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding-top: 20px;
+      border-top: 1px solid var(--border-card);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="hero-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#00D4FF" stroke-width="2">
+          <circle cx="12" cy="12" r="4" stroke="#00D4FF" fill="#00D4FF" fill-opacity="0.2"/>
+          <circle cx="19" cy="6" r="2" stroke="#00FFB3" fill="#00FFB3"/>
+          <circle cx="19" cy="18" r="2.5" stroke="#FF6B6B" fill="#FF6B6B"/>
+          <circle cx="5" cy="18" r="2" stroke="#FFD700" fill="#FFD700"/>
+          <circle cx="5" cy="6" r="2" stroke="#9B59B6" fill="#9B59B6"/>
+          <line x1="12" y1="12" x2="19" y2="6" stroke="#00FFB3" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="12" y1="12" x2="19" y2="18" stroke="#FF6B6B" stroke-width="1.5"/>
+          <line x1="12" y1="12" x2="5" y2="18" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="1.5,1.5"/>
+          <line x1="12" y1="12" x2="5" y2="6" stroke="#9B59B6" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h1 class="hero-title">FirstNode v2.0</h1>
+      <div class="hero-tagline">Autopilot Digital Identity Journey Tracker</div>
+      <p class="hero-desc">
+        Active as you browse the web. FirstNode automatically intercepts and organizes personal data submissions and OAuth sign-in events, mapping your digital footprint across an interactive timeline, network graph, and global server map.
+      </p>
+      <div class="cta-buttons">
+        <a href="../test-demo/signup.html" class="btn btn-primary">Open Test Harness</a>
+        <button class="btn btn-secondary" onclick="window.close()">Start Browsing</button>
+      </div>
+    </header>
+
+    <!-- Key Views & Capabilities -->
+    <section>
+      <h2 class="section-title">Core Privacy Views</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-name">Chronological Timeline</div>
+          <div class="feature-text">Browse every data submission in sequence. Search, filter across 9 categories and OAuth, view masked values, and inspect categorized breakdowns.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">Cytoscape.js Journey Graph</div>
+          <div class="feature-text">Visualizes your browsing journey as an interactive network graph with directional hops and time difference indicators.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">Leaflet.js Server Map</div>
+          <div class="feature-text">Plots server locations on a global map with pulsing markers and timeline scrubber playback.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">Chart.js Analytics</div>
+          <div class="feature-text">Track your 30-day data exposure growth, identify top OAuth providers, and export your trail to JSON or CSV.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detected Categories -->
+    <section class="categories-card">
+      <h2 class="section-title">Comprehensive 9-Category Field Detection</h2>
+      <p style="font-size: 13px; color: var(--text-secondary);">
+        FirstNode automatically classifies inputs across 9 personal data categories and masks them before saving:
+      </p>
+      <div class="badge-grid">
+        <div class="cat-item" style="color: #00D4FF; border-color: rgba(0,212,255,0.4)"><span>1. Identity</span> <span>Name, Username</span></div>
+        <div class="cat-item" style="color: #FFD700; border-color: rgba(255,215,0,0.4)"><span>2. OAuth</span> <span>Google, GitHub, Apple</span></div>
+        <div class="cat-item" style="color: #FF6B6B; border-color: rgba(255,107,107,0.4)"><span>3. Contact</span> <span>Email, Phone</span></div>
+        <div class="cat-item" style="color: #00FFB3; border-color: rgba(0,255,179,0.4)"><span>4. Address</span> <span>Street, City, Zip</span></div>
+        <div class="cat-item" style="color: #F39C12; border-color: rgba(243,156,18,0.4)"><span>5. Government ID</span> <span>SSN, Passport</span></div>
+        <div class="cat-item" style="color: #9B59B6; border-color: rgba(155,89,182,0.4)"><span>6. Financial</span> <span>Card, Bank, UPI</span></div>
+        <div class="cat-item" style="color: #3498DB; border-color: rgba(52,152,219,0.4)"><span>7. Professional</span> <span>Job, Company</span></div>
+        <div class="cat-item" style="color: #1ABC9C; border-color: rgba(26,188,156,0.4)"><span>8. Education</span> <span>University, Degree</span></div>
+        <div class="cat-item" style="color: #E67E22; border-color: rgba(230,126,34,0.4)"><span>9. Demographics</span> <span>Age, DOB</span></div>
+      </div>
+    </section>
+
+    <!-- Privacy Architecture Guarantee -->
+    <section class="privacy-card">
+      <div>
+        <div class="privacy-title">Local & Privacy-First Architecture</div>
+        <div class="privacy-desc">
+          Your personal data never leaves your computer. Form entries are automatically masked (e.g. <code>jo***@email.com</code> or <code>41************11</code>) and stored strictly in your browser's local storage. FirstNode contains zero external trackers or remote analytics.
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      FirstNode v2.0.0 • Digital Identity Journey Tracker • Open Source & Privacy-First
+    </footer>
+
+  </div>
+
+</body>
+</html>

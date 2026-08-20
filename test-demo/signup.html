@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FirstNode v2.0 - Test Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0A1628;
+      color: #FFFFFF;
+      min-height: 100vh;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .header-card {
+      background: #1E2A3A;
+      border: 1px solid #2A3A4E;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #00D4FF;
+      margin-bottom: 6px;
+    }
+
+    .header-desc {
+      font-size: 13.5px;
+      color: #B0C4DE;
+    }
+
+    .demo-card {
+      background: #1E2A3A;
+      border: 1px solid #2A3A4E;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #FFFFFF;
+      border-bottom: 1px solid #2A3A4E;
+      padding-bottom: 10px;
+    }
+
+    .oauth-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn-oauth {
+      background: #0A1628;
+      border: 1px solid #2A3A4E;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .btn-oauth:hover {
+      border-color: #00D4FF;
+      background: #2A3A4E;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #B0C4DE;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge-cat {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    input, select {
+      background: #0A1628;
+      border: 1px solid #2A3A4E;
+      color: #FFFFFF;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+      font-family: inherit;
+    }
+    input:focus, select:focus {
+      border-color: #00D4FF;
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: #00D4FF;
+      color: #0A1628;
+      border: none;
+      padding: 11px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover {
+      background: #0099CC;
+      color: #FFFFFF;
+      box-shadow: 0 0 14px rgba(0, 212, 255, 0.4);
+    }
+
+    .dynamic-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-secondary {
+      background: #0A1628;
+      border: 1px solid #2A3A4E;
+      color: #B0C4DE;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      border-color: #00D4FF;
+      color: #FFFFFF;
+    }
+
+    .submission-log {
+      background: #070F1C;
+      border: 1px solid #2A3A4E;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: monospace;
+      font-size: 11.5px;
+      color: #00FFB3;
+      margin-top: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <div class="header-card">
+      <div class="header-title">FirstNode v2.0 Autopilot Test Harness</div>
+      <div class="header-desc">
+        Test real-time form interception, OAuth authentication detection, and dynamic SPA form scanning.
+      </div>
+    </div>
+
+    <!-- Section 1: OAuth Authentication -->
+    <div class="demo-card">
+      <div class="card-title">
+        <span>1. OAuth Sign-In Flows</span>
+        <span style="font-size:11px; color:#00D4FF; font-weight:600;">AUTOPILOT ENABLED</span>
+      </div>
+      <div class="oauth-grid">
+        <button class="btn-oauth" data-provider="Google" id="btn-oauth-google">
+          Sign in with Google
+        </button>
+        <button class="btn-oauth" data-provider="GitHub" id="btn-oauth-github">
+          Sign in with GitHub
+        </button>
+        <button class="btn-oauth" data-provider="Apple" id="btn-oauth-apple">
+          Sign in with Apple
+        </button>
+        <button class="btn-oauth" data-provider="Microsoft" id="btn-oauth-microsoft">
+          Sign in with Microsoft
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 2: Complete 9 Categories Form -->
+    <div class="demo-card">
+      <div class="card-title">
+        <span>2. Personal Data Form (All 9 Categories)</span>
+        <span style="font-size:11px; color:#B0C4DE;">Auto-Masked for Privacy</span>
+      </div>
+      
+      <form id="test-personal-form" onsubmit="handleDemoSubmit(event)">
+        
+        <div class="form-grid">
+          <!-- 1. Identity -->
+          <div class="form-group">
+            <label for="fullname">Full Name <span class="badge-cat" style="background:rgba(0,212,255,0.12); color:#00D4FF">Identity</span></label>
+            <input type="text" id="fullname" name="fullname" placeholder="Jane Alexander Doe" value="Jane Alexander Doe" autocomplete="name" required>
+          </div>
+
+          <!-- 2. Contact (Email) -->
+          <div class="form-group">
+            <label for="email">Email Address <span class="badge-cat" style="background:rgba(255,107,107,0.12); color:#FF6B6B">Contact</span></label>
+            <input type="email" id="email" name="email" placeholder="jane.doe@example.com" value="jane.doe@example.com" autocomplete="email" required>
+          </div>
+
+          <!-- 2. Contact (Phone) -->
+          <div class="form-group">
+            <label for="phone">Phone Number <span class="badge-cat" style="background:rgba(255,107,107,0.12); color:#FF6B6B">Contact</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 382-9912" value="+1 (555) 382-9912" autocomplete="tel">
+          </div>
+
+          <!-- 3. Address -->
+          <div class="form-group">
+            <label for="address">Postal Address <span class="badge-cat" style="background:rgba(0,255,179,0.12); color:#00FFB3">Address</span></label>
+            <input type="text" id="address" name="address" placeholder="742 Evergreen Terrace, Springfield" value="742 Evergreen Terrace, Springfield" autocomplete="street-address">
+          </div>
+
+          <!-- 4. Government ID -->
+          <div class="form-group">
+            <label for="ssn">National / Tax ID (SSN/Aadhaar) <span class="badge-cat" style="background:rgba(243,156,18,0.12); color:#F39C12">Gov ID</span></label>
+            <input type="text" id="ssn" name="ssn" placeholder="XXX-XX-8912" value="984-21-8912">
+          </div>
+
+          <!-- 5. Financial -->
+          <div class="form-group">
+            <label for="creditcard">Card / UPI Identifier <span class="badge-cat" style="background:rgba(155,89,182,0.12); color:#9B59B6">Financial</span></label>
+            <input type="text" id="creditcard" name="creditcard" placeholder="4111 2222 3333 4444" value="4111 2222 3333 4444">
+          </div>
+
+          <!-- 6. Professional -->
+          <div class="form-group">
+            <label for="jobtitle">Job Title & Company <span class="badge-cat" style="background:rgba(52,152,219,0.12); color:#3498DB">Professional</span></label>
+            <input type="text" id="jobtitle" name="jobtitle" placeholder="Lead Security Engineer at CyberCorp" value="Lead Security Engineer">
+          </div>
+
+          <!-- 7. Education -->
+          <div class="form-group">
+            <label for="university">University / Degree <span class="badge-cat" style="background:rgba(26,188,156,0.12); color:#1ABC9C">Education</span></label>
+            <input type="text" id="university" name="university" placeholder="MIT, B.S. Computer Science" value="MIT - Computer Science">
+          </div>
+
+          <!-- 8. Demographics -->
+          <div class="form-group">
+            <label for="dob">Date of Birth <span class="badge-cat" style="background:rgba(230,126,34,0.12); color:#E67E22">Demographics</span></label>
+            <input type="date" id="dob" name="dob" value="1994-06-15">
+          </div>
+
+          <!-- 9. Social Media -->
+          <div class="form-group">
+            <label for="social">Social Handle / Profile <span class="badge-cat" style="background:rgba(231,76,60,0.12); color:#E74C3C">Social</span></label>
+            <input type="text" id="social" name="social" placeholder="@janedoe_privacy" value="@janedoe_privacy">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Form</button>
+      </form>
+
+      <div class="submission-log" id="submission-log"></div>
+    </div>
+
+    <!-- Section 3: Dynamic Form Injection (SPA Simulation) -->
+    <div class="demo-card">
+      <div class="card-title">
+        <span>3. Single Page Application (SPA) Dynamic Form Test</span>
+      </div>
+      <p style="font-size:13px; color:#B0C4DE; margin-bottom: 12px;">
+        Test FirstNode's MutationObserver scanner by dynamically inserting forms into the DOM without a page reload.
+      </p>
+      <div class="dynamic-actions">
+        <button class="btn-secondary" onclick="injectDynamicModal()">Inject Dynamic Form</button>
+        <button class="btn-secondary" onclick="clearInjectedModal()">Clear Injected Form</button>
+      </div>
+      <div id="dynamic-container" style="margin-top: 14px;"></div>
+    </div>
+
+  </div>
+
+  <script>
+    function handleDemoSubmit(e) {
+      e.preventDefault();
+      const log = document.getElementById('submission-log');
+      log.style.display = 'block';
+      log.textContent = `Form submitted at ${new Date().toLocaleTimeString()}. FirstNode Autopilot has recorded the inputs and masked sensitive values for your local privacy trail.`;
+    }
+
+    function injectDynamicModal() {
+      const container = document.getElementById('dynamic-container');
+      container.innerHTML = `
+        <div style="background:#070F1C; border:1px solid #00D4FF; border-radius:8px; padding:16px;">
+          <div style="color:#00D4FF; font-weight:600; margin-bottom:8px; font-size:13px;">Dynamically Injected Newsletter Form</div>
+          <form onsubmit="handleDemoSubmit(event)">
+            <input type="email" name="subscriber_email" placeholder="subscriber@dynamic-spa.com" style="width:100%; margin-bottom:8px;" required>
+            <button type="submit" class="btn-submit" style="padding:8px;">Subscribe</button>
+          </form>
+        </div>
+      `;
+    }
+
+    function clearInjectedModal() {
+      document.getElementById('dynamic-container').innerHTML = '';
+    }
+  </script>
+</body>
+</html>
